@@ -1,7 +1,7 @@
 
-from django.urls import path
+from django.conf.urls import url
 from views import test
 
 urlpatterns = [
-    path(r'^(\d)+$', test, name='test'),
+    url(r'^(\d)+$', test, name='test'),
 ]
