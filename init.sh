@@ -7,9 +7,7 @@ sudo /etc/init.d/gunicorn restart
 
 sudo /etc/init.d/mysql start
 mysql -uroot -e "create database stepik_web;"
-mysql -uroot -e "grant all privileges on stepic_web.* to 'box'@'localhost' with grant option;"
-python3 /home/box/web/ask/manage.py syncdb
-
-
-
+mysql -uroot -e "grant all privileges on stepik_web.* to 'box'@'localhost' with grant option;"
+sudo python3 /home/box/web/ask/manage.py makemigrations qa
+sudo python3 /home/box/web/ask/manage.py migrate
 
