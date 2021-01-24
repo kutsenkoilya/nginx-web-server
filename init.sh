@@ -8,8 +8,7 @@ sudo /etc/init.d/gunicorn restart
 sudo /etc/init.d/mysql start
 mysql -uroot -e "create database stepik_web;"
 mysql -uroot -e "grant all privileges on stepic_web.* to 'box'@'localhost' with grant option;"
-
-sudo python /home/box/web/ask/manage.py syncdb
+python3 /home/box/web/ask/manage.py syncdb
 
 
 
