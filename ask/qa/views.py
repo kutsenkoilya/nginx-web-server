@@ -1,6 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_GET
+from django.core.paginator import Paginator, EmptyPage
+from django.http import Http404
 
 from models import Question, Answer
 
@@ -21,9 +23,9 @@ def paginate(request, qs): #qs - QuerySet
     paginator = Paginator(qs, limit)
     out_page = None
     try:
-		out_page = paginator.page(page)
-	except EmptyPage: #пустая последняя страница
-		out_page = paginator.page(paginator.num_pages) #вернуть последнюю страницу
+        out_page = paginator.page(page)
+    except EmptyPage: #пустая последняя страница
+        out_page = paginator.page(paginator.num_pages) #вернуть последнюю страницу
     return paginator,out_page
 
 def get_main(request):
