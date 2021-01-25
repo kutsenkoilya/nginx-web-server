@@ -8,22 +8,23 @@ def test(request, *args, **kwargs):
     return HttpResponse('OK')
 
 def paginate(request, qs): #qs - QuerySet
-	try:
-		limit = int(request.GET.get('limit',10))
-	except ValueError:
-		limit = 10
-	if limit > 100:
-		limit = 10
-	try:
-		page = int(request.GET.get('page', 1))
-	except ValueError:
-		raise Http404
-	paginator = Paginator(qs, limit)
-	try:
-		page = paginator.page(page)
+    try:
+        limit = int(request.GET.get('limit',10))
+    except ValueError:
+        limit = 10
+    if limit > 100:
+        limit = 10
+    try:
+        page = int(request.GET.get('page', 1))
+    except ValueError:
+        raise Http404
+    paginator = Paginator(qs, limit)
+    out_page = None
+    try:
+		out_page = paginator.page(page)
 	except EmptyPage: #пустая последняя страница
-		page = paginator.page(paginator.num_pages) #вернуть последнюю страницу
-    return paginator,page
+		out_page = paginator.page(paginator.num_pages) #вернуть последнюю страницу
+    return paginator,out_page
 
 def get_main(request):
     questions_new = Question.objects.new_id()
