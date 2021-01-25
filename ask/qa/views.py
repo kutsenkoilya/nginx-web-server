@@ -1,10 +1,10 @@
-from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
-from django.views.decorators.http import require_GET
-from django.core.paginator import Paginator, EmptyPage
-from django.http import Http404
 
-from models import Question, Answer
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse
+from django.core.paginator import Paginator, EmptyPage
+from qa.models import Question, Answer
+from django.http import Http404, HttpResponseRedirect, HttpResponse
+from django.core.urlresolvers import reverse
 
 def test(request, *args, **kwargs):
     return HttpResponse('OK')
@@ -21,38 +21,33 @@ def paginate(request, qs): #qs - QuerySet
     except ValueError:
         raise Http404
     paginator = Paginator(qs, limit)
-    out_page = None
     try:
-        out_page = paginator.page(page)
+        page = paginator.page(page)
     except EmptyPage: #пустая последняя страница
-        out_page = paginator.page(paginator.num_pages) #вернуть последнюю страницу
-    return paginator,out_page
+        page = paginator.page(paginator.num_pages) #вернуть последнюю страницу
+    return page,paginator
 
 def get_main(request):
-    questions_new = Question.objects.new_id()
-    paginator,page = paginate(request, questions_new)
-    paginator.baseurl = '/?page='
-    return render(request, 'templates/main.html', {
-        'questions': page.object_list,
-        'paginator': paginator,
-        'page': page
-    })
+    qa = Question.objects.new_id()
+    page,paginator = paginate(request, qa)
+
+    return render(request,'main.html',{
+        'questions': page.object_list, 
+        'paginator': paginator, 
+        'page':page })
 
 def get_popular(request):
-    questions_popular = Question.objects.popular()
-    paginator,page = paginate(request, questions_popular)
-    paginator.baseurl = '/popular/?page='
-    return render(request, 'templates/main.html', {
+    qa = Question.objects.popular()
+    page,paginator = paginate(request, qa)
+    return render(request, 'main.html', {
         'questions': page.object_list,
         'paginator': paginator,
-        'page': page
-    })
+        'page': page })
 
-@require_GET
 def get_question(request, qn=None):
-    question = get_object_or_404(Question, id=qn)
-    answers = Answer.objects.filter(question__id = qn)[:]
-    return render(request, 'templates/question.html', {
+    question = get_object_or_404(Question, pk=qn)
+    answers = Answer.objects.filter(question = question)
+    return render(request, 'question.html', {
             'question': question,
             'answers' : answers
     })
