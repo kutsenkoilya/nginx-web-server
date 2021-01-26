@@ -17,6 +17,8 @@ BASE_DIR = os.path.abspath(__file__)
 BASE_DIR = os.path.dirname(BASE_DIR)
 BASE_DIR = os.path.dirname(BASE_DIR)
 
+STATIC_URL = '/static/'
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
@@ -53,10 +55,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'ask.urls'
 
-
 TEMPLATE_DIRS = (
    BASE_DIR + '/templates',
 )
+
+STATIC_ROOT = BASE_DIR + '/static'
 
 WSGI_APPLICATION = 'ask.wsgi.application'
 
