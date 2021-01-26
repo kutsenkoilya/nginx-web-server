@@ -18,7 +18,7 @@
     Questions:
       {% for question in questions %}
       <p>      
-          <a href="{{ question.get_url }}"> {{ question }} </a>
+          <a href="{{ question.get_url }}"> {{ question.title }} </a>
       </p> 
       {% endfor %}
 </body>
