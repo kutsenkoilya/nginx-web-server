@@ -19,6 +19,12 @@ class Question(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     likes = models.ManyToManyField(User, related_name='question_like_user')
     
+    def __unicode__(self):
+        return self.text
+    def get_url(self):
+        link = '/question/' + str(self.id) + '/'
+        return link
+
 class Answer(models.Model):
     text = models.TextField()
     added_at = models.DateTimeField(auto_now_add=True)

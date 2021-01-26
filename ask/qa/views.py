@@ -30,7 +30,7 @@ def paginate(request, qs): #qs - QuerySet
 def get_main(request):
     qa = Question.objects.new_id()
     page,paginator = paginate(request, qa)
-
+    paginator.baseurl = '/?page='
     return render(request,'main.html',{
         'questions': page.object_list, 
         'paginator': paginator, 
@@ -39,6 +39,7 @@ def get_main(request):
 def get_popular(request):
     qa = Question.objects.popular()
     page,paginator = paginate(request, qa)
+    paginator.baseurl = '/?page='
     return render(request, 'main.html', {
         'questions': page.object_list,
         'paginator': paginator,
