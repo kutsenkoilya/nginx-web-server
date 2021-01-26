@@ -4,7 +4,6 @@ from django.http import HttpResponse
 from django.core.paginator import Paginator, EmptyPage
 from qa.models import Question, Answer
 from django.http import Http404, HttpResponseRedirect, HttpResponse
-from django.core.urlresolvers import reverse
 
 def test(request, *args, **kwargs):
     return HttpResponse('OK')

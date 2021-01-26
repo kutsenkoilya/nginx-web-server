@@ -13,3 +13,4 @@ Django version 1.10.5
 Take latest from here
 https://github.com/barbagrigia/stepic-web-project/
 
+https://github.com/genzonline/web
