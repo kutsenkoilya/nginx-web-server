@@ -8,7 +8,7 @@ from django.http import Http404, HttpResponseRedirect, HttpResponse
 def test(request, *args, **kwargs):
     return HttpResponse('OK')
 
-def paginate(request, qs): #qs - QuerySet
+def paginate(request, qs):
     try:
         limit = int(request.GET.get('limit',10))
     except ValueError:
@@ -22,8 +22,8 @@ def paginate(request, qs): #qs - QuerySet
     paginator = Paginator(qs, limit)
     try:
         page = paginator.page(page)
-    except EmptyPage: #пустая последняя страница
-        page = paginator.page(paginator.num_pages) #вернуть последнюю страницу
+    except EmptyPage:
+        page = paginator.page(paginator.num_pages)
     return page,paginator
 
 def get_main(request):
