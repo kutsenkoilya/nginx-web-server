@@ -5,6 +5,7 @@ from django.core.paginator import Paginator, EmptyPage
 from qa.models import Question, Answer
 from qa.forms import AskForm,AnswerForm
 from django.http import Http404, HttpResponseRedirect, HttpResponse
+from django.contrib.auth.models import User
 
 def test(request, *args, **kwargs):
     return HttpResponse('OK')
@@ -48,6 +49,7 @@ def get_popular(request):
 def get_question(request, qn=None):
     if (request.method == "POST"): #post answer
         form = AnswerForm(request.POST)
+        form._user = User.objects.get(id=1)
         if form.is_valid():
             q = form.save()
             return HttpResponseRedirect(q.get_url())
@@ -64,6 +66,7 @@ def get_question(request, qn=None):
 def post_question(request): #post question
     if request.method == "POST":
         form = AskForm(request.POST)
+        form._user = User.objects.get(id=1)
         if form.is_valid():
             q = form.save()
             return HttpResponseRedirect(q.get_url())
