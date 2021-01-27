@@ -22,8 +22,7 @@ class Question(models.Model):
     def __unicode__(self):
         return self.text
     def get_url(self):
-        link = '/question/' + str(self.id) + '/'
-        return link
+        return '/question/%d/' % self.id
 
 class Answer(models.Model):
     text = models.TextField()
