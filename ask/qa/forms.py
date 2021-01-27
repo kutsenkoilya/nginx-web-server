@@ -1,33 +1,25 @@
 from django import forms
-from qa.views import Answer,Question
+from qa.models import Answer,Question
+from django.contrib.auth.models import User
 
 class AskForm(forms.Form):
-    title = forms.CharField(max_length=255)
-    text = forms.CharField(widget=forms.Textarea)
-    def clean_title(self):
-        title = self.clean_data['title']
-        if len(title) == 0:
-            raise forms.ValidationError(u'Empty Title', code='eTitle')
-        return title
-    def clean_text(self):
-        text = self.clean_data['text']
-        if len(text) == 0:
-            raise forms.ValidationError(u'Empty text', code='eText')
-        return text
+    title = forms.CharField(max_length=100)
+    text = forms.CharField(max_length=255,widget=forms.Textarea)
+    def clean(self):
+        return self.cleaned_data
     def save(self):
-        q = Question(**self.cleaned_data)
+        u = User.objects.get(id=1)
+        q = Question(text=self.cleaned_data['text'],title=self.cleaned_data['title'],author=u)
         q.save()
         return q
 
 class AnswerForm(forms.Form):
     title = forms.CharField(max_length=255)
     question = forms.ModelChoiceField(queryset=Question.objects.all(), empty_label=None)
-    def clean_title(self):
-        title = self.clean_data['title']
-        if len(title) == 0:
-            raise forms.ValidationError(u'Empty Title', code='eTitle')
-        return title
+    def clean(self):
+        return self.cleaned_data
     def save(self):
-        a = Answer(**self.cleaned_data)
+        u = User.objects.get(id=1)
+        a = Answer(text=self.cleaned_data['text'],question=self.cleaned_data['question'],author=u)
         a.save()
-        return a.question
+        return a
