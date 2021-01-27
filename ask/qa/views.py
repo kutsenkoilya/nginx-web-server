@@ -56,7 +56,7 @@ def get_question(request, qn=None):
     else: #get question
         question = get_object_or_404(Question, pk=qn)
         answers = Answer.objects.filter(question = question)
-        form = AnswerForm(initial={'question': question.id})
+        form = AnswerForm()
     return render(request, 'question.html', {
             'question': question,
             'answers' : answers,

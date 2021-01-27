@@ -14,7 +14,7 @@ class AskForm(forms.Form):
 
 class AnswerForm(forms.Form):
     text = forms.CharField(max_length=255)
-    question = forms.ModelChoiceField(queryset=Question.objects.all(), empty_label=None)
+    question = forms.ModelChoiceField(queryset=Question.objects.all())
     def clean(self):
         return self.cleaned_data
     def save(self):
