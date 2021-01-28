@@ -49,8 +49,8 @@ def get_question(request, qn=None):
     if (request.method == "POST"): #post answer
         form = AnswerForm(request.POST)
         if form.is_valid():
-            q = form.save()
-            return HttpResponseRedirect(q.get_url())
+            a = form.save()
+            return HttpResponseRedirect(a.question.get_url())
     else: #get question
         question = get_object_or_404(Question, pk=qn)
         answers = Answer.objects.filter(question = question)
