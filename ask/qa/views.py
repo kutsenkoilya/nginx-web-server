@@ -46,18 +46,17 @@ def get_popular(request):
         'page': page })
 
 def get_question(request, qn=None):
+    question = get_object_or_404(Question, pk=qn)
     if (request.method == "POST"): #post answer
         form = AnswerForm(request.POST)
         if form.is_valid():
             a = form.save()
             return HttpResponseRedirect(a.question.get_url())
     else: #get question
-        question = get_object_or_404(Question, pk=qn)
-        answers = Answer.objects.filter(question = question)
         form = AnswerForm()
     return render(request, 'question.html', {
             'question': question,
-            'answers' : answers,
+            'answers' : Answer.objects.filter(question = question),
             'form' : form
     })
 
