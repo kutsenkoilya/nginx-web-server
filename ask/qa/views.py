@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.core.paginator import Paginator, EmptyPage
 from qa.models import Question, Answer
-from qa.forms import AskForm,AnswerForm
+from qa.forms import AskForm,AnswerForm,UserForm,LoginForm
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 
 def test(request, *args, **kwargs):
@@ -63,9 +63,32 @@ def get_question(request, qn=None):
 def post_question(request): #post question
     if request.method == "POST":
         form = AskForm(request.POST)
+        form._user = request.user
         if form.is_valid():
             q = form.save()
             return HttpResponseRedirect(q.get_url())
     else:
         form = AskForm()
     return render(request, 'ask.html', {'form': form} )
+
+#aka register
+def signup(request):
+    if request.method == "POST":
+        form = UserForm(request.POST)
+        form._user = request.user
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/')
+    else:
+        form = UserForm()
+    return render(request, 'signup.html', {'form': form} )
+
+def login(request):
+    if request.method == "POST":
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            form.save(request)
+            return HttpResponseRedirect('/')
+    else:
+        form = LoginForm()
+    return render(request, 'login.html', {'form': form} )
