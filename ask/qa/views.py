@@ -77,7 +77,7 @@ def signup(request):
         form = UserForm(request.POST)
         form._user = request.user
         if form.is_valid():
-            form.save()
+            form.save(request)
             return HttpResponseRedirect('/')
     else:
         form = UserForm()

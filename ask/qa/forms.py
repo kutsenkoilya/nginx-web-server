@@ -31,9 +31,11 @@ class UserForm(forms.Form):
     password = forms.CharField(max_length=100, widget=forms.PasswordInput)
     def clean(self):
         return self.cleaned_data
-    def save(self):
+    #save and login
+    def save(self,request):
         u = User.objects.create_user(**self.cleaned_data)
         u.save()
+        login(request, u)
         return u
 
 class LoginForm(forms.Form):
